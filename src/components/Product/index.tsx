@@ -352,7 +352,7 @@ const ProductPage = () => {
             </div>
             <div className="col-span-2 flex items-center">
               <p className="text-sm text-black dark:text-white">
-                {product.price} VND
+                {Intl.NumberFormat('de-DE').format(product.price)} VND
               </p>
             </div>
             <div className="col-span-1 flex items-center" onClick={() => handleOpenUpdateModal(product)}>
@@ -486,12 +486,12 @@ const ProductPage = () => {
                 {isDelete ? "Đang xóa..." : "Xóa"}
               </button>
               <div className="flex gap-4">
-              <button className="flex justify-center rounded border border-stroke px-6 py-2" onClick={handleCloseUpdateModal}>
-                Huỷ
-              </button>
-              <button className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90" onClick={handleUpdateProduct}>
-                {isSaving ? "Đang lưu..." : "Lưu"}
-              </button>
+                <button className="flex justify-center rounded border border-stroke px-6 py-2" onClick={handleCloseUpdateModal}>
+                  Huỷ
+                </button>
+                <button className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90" onClick={handleUpdateProduct}>
+                  {isSaving ? "Đang lưu..." : "Lưu"}
+                </button>
               </div>
             </div>
           </div>
