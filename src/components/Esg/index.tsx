@@ -41,14 +41,14 @@ const EsgPage = () => {
         try {
             const response = await fetch(apiUrl, requestOptions);
             if (!response.ok) {
-                throw new Error("Failed to update product");
+                throw new Error("Failed to update ESG information");
             }
             setUpdatingEsgID(0);
             setLoading(true);
             await fetchEsgs();
         } catch (error) {
             console.error("Error:", error);
-            alert("Failed to update product");
+            alert("Failed to update ESG information");
         }
     };
 
@@ -66,7 +66,7 @@ const EsgPage = () => {
         } catch (err) {
             console.log(err);
         } finally {
-            setLoading(false); // Set loading to false after fetching
+            setLoading(false);
         }
     };
 
