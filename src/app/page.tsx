@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import { Metadata } from "next";
+import LoginPage from "@/components/Login";
 
 export const metadata: Metadata = {
   title: "ECOKA DASHBOARD - TRANG CHỦ",
@@ -8,10 +9,8 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <>
-      <Layout>
-        <div className="w-full pt-20 flex justify-center items-center">ECOKA HANDICAFTS</div>
-      </Layout>
-    </>
+    <div className="w-full h-screen flex justify-center items-center">
+      <LoginPage />
+    </div>
   );
 }
