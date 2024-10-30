@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "flatpickr": "^4.6.13",
+    "js-cookie": "^3.0.5",
     "jsvectormap": "^1.6.0",
     "next": "^14.2.4",
     "react": "^18",
