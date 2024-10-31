@@ -140,22 +140,41 @@ const CompanyPage = () => {
                                         />
                                     </div>
                                 </div>
-                                <div className="mb-5.5">
-                                    <label
-                                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                        htmlFor="emailAddress"
-                                    >
-                                        Địa chỉ email
-                                    </label>
-                                    <input
-                                        className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                        type="email"
-                                        name="emailAddress"
-                                        id="emailAddress"
-                                        placeholder="abc@gmail.com"
-                                        defaultValue={company[0]?.email}
-                                        onChange={(e) => setCompany([{ ...company[0], email: e.target.value }])}
-                                    />
+                                <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                                    <div className="w-full sm:w-1/2">
+                                        <label
+                                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                                            htmlFor="emailAddress"
+                                        >
+                                            Địa chỉ email
+                                        </label>
+                                        <input
+                                            className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                            type="email"
+                                            name="emailAddress"
+                                            id="emailAddress"
+                                            placeholder="abc@gmail.com"
+                                            defaultValue={company[0]?.email}
+                                            onChange={(e) => setCompany([{ ...company[0], email: e.target.value }])}
+                                        />
+                                    </div>
+                                    <div className="w-full sm:w-1/2">
+                                        <label
+                                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                                            htmlFor="phoneNumber"
+                                        >
+                                            Địa chỉ
+                                        </label>
+                                        <input
+                                            className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                            type="text"
+                                            name="address"
+                                            id="address"
+                                            placeholder="Địa chỉ"
+                                            defaultValue={company[0]?.address}
+                                            onChange={(e) => setCompany([{ ...company[0], address: e.target.value }])}
+                                        />
+                                    </div>
                                 </div>
                                 <div className="mb-5.5">
                                     <label

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { getAll } from "@/utils/apis";
 import Image from "next/image";
@@ -16,34 +16,94 @@ const EsgPage = () => {
     const [esgs, setEsgs] = useState<ESG[]>([]);
     const [loading, setLoading] = useState(true);
     const [updatingEsgID, setUpdatingEsgID] = useState(0);
+    const [localImages, setLocalImages] = useState<Record<number, File[]>>({});
+    const [previewThumbnails, setPreviewThumbnails] = useState<Record<number, string>>({});
 
-    const apiUrl = "https://n8n.khiemfle.com/webhook/aa7f04f4-7833-49c2-8c86-7a043f4a8a5a";
+    const apiUrl =
+        "https://n8n.khiemfle.com/webhook/aa7f04f4-7833-49c2-8c86-7a043f4a8a5a";
 
+    const handleImageUpload = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        esgId: number
+    ) => {
+        const files = Array.from(e.target.files || []);
+        setLocalImages((prevImages) => ({
+            ...prevImages,
+            [esgId]: [...(prevImages[esgId] || []), ...files],
+        }));
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            setPreviewThumbnails((prevThumbnails) => ({
+                ...prevThumbnails,
+                [esgId]: reader.result as string,
+            }));
+        };
+        if (files[0]) {
+            reader.readAsDataURL(files[0]);
+        }
+    };
+
+    const uploadImagesToCloudinary = async (images: File[]) => {
+        const uploadedUrls: string[] = [];
+        for (const image of images) {
+            const formData = new FormData();
+            formData.append("file", image);
+            formData.append("upload_preset", "portal");
+            formData.append("folder", "ecoka");
+            try {
+                const response = await fetch(
+                    "https://api.cloudinary.com/v1_1/farmcode/image/upload",
+                    {
+                        method: "POST",
+                        body: formData,
+                        redirect: "follow",
+                    }
+                );
+                if (!response.ok) {
+                    throw new Error("Failed to upload image to Cloudinary");
+                }
+                const result = await response.json();
+                uploadedUrls.push(result.url.replace("http://", "https://"));
+            } catch (error) {
+                console.error("Error uploading image:", error);
+            }
+        }
+        return uploadedUrls;
+    };
 
     const handleUpdateEsg = async (updatedEsg: ESG) => {
         setUpdatingEsgID(updatedEsg.id);
+        const newImages = localImages[updatedEsg.id] || [];
+        const uploadedImageUrls = await uploadImagesToCloudinary(newImages);
+
         const raw = JSON.stringify({
             method: "UPDATE",
             id: updatedEsg.id,
             row_number: updatedEsg.row,
             title: updatedEsg.title,
             description: updatedEsg.description,
-            thumbnail: updatedEsg.thumbnail,
+            thumbnail: uploadedImageUrls[0] || updatedEsg.thumbnail,
         });
+
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
+
         const requestOptions = {
             method: "POST",
             headers: myHeaders,
             body: raw,
-            redirect: "follow" as RequestRedirect
+            redirect: "follow" as RequestRedirect,
         };
+
         try {
             const response = await fetch(apiUrl, requestOptions);
             if (!response.ok) {
                 throw new Error("Failed to update ESG information");
             }
             setUpdatingEsgID(0);
+            setLocalImages([]);
+            setPreviewThumbnails([]);
             setLoading(true);
             await fetchEsgs();
         } catch (error) {
@@ -101,9 +161,14 @@ const EsgPage = () => {
     return (
         <div className="grid grid-cols-12 gap-8">
             {loading
-                ? Array.from({ length: 6 }).map((_, index) => <SkeletonLoader key={index} />)
+                ? Array.from({ length: 6 }).map((_, index) => (
+                    <SkeletonLoader key={index} />
+                ))
                 : esgs.map((esg: ESG) => (
-                    <div key={esg.id} className="col-span-12 lg:col-span-4 md:col-span-4">
+                    <div
+                        key={esg.id}
+                        className="col-span-12 lg:col-span-4 md:col-span-4"
+                    >
                         <div className="rounded-md border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                             <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                                 <h3 className="font-medium text-black dark:text-white">
@@ -113,19 +178,26 @@ const EsgPage = () => {
                             <div className="p-7">
                                 <div className="w-full mb-4">
                                     <Image
-                                        src={esg.thumbnail}
+                                        src={previewThumbnails[esg.id] || esg.thumbnail}
                                         alt="img"
                                         width={500}
                                         height={200}
                                         className="rounded-lg"
                                     />
                                 </div>
+                                <input
+                                    type="file"
+                                    multiple
+                                    accept="image/*"
+                                    onChange={(e) => handleImageUpload(e, esg.id)}
+                                    className="w-full mb-4"
+                                />
                                 <div className="mb-4 flex items-center gap-3">
                                     <textarea
                                         defaultValue={esg.description}
                                         className="w-full mb-4 px-3 py-2 border rounded-lg"
                                         rows={14}
-                                        onChange={(e) => esg.description = e.target.value}
+                                        onChange={(e) => (esg.description = e.target.value)}
                                     ></textarea>
                                 </div>
                                 <div className="flex justify-end gap-4.5">
