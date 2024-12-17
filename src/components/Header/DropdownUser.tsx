@@ -1,10 +1,17 @@
 import { useState } from "react";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import Image from "next/image";
 import ClickOutside from "@/components/ClickOutside";
+import { ROUTES } from "@/utils/route";
 
-const DropdownUser = () => {
+const DropdownUser = ({ lang, dictionary }: { lang: string, dictionary: any }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleLogOut = () => {
+    Cookies.remove("admincookie");
+    window.location.href = ROUTES.HOME + lang;
+  }
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -74,7 +81,7 @@ const DropdownUser = () => {
                     fill=""
                   />
                 </svg>
-                My Profile
+                {dictionary?.HEADER_toggle_i1}
               </Link>
             </li>
             <li>
@@ -95,7 +102,7 @@ const DropdownUser = () => {
                     fill=""
                   />
                 </svg>
-                My Contacts
+                {dictionary?.HEADER_toggle_i2}
               </Link>
             </li>
             <li>
@@ -120,11 +127,11 @@ const DropdownUser = () => {
                     fill=""
                   />
                 </svg>
-                Account Settings
+                {dictionary?.HEADER_toggle_i3}
               </Link>
             </li>
           </ul>
-          <Link href='/login' className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+          <div onClick={handleLogOut} className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base cursor-pointer">
             <svg
               className="fill-current"
               width="22"
@@ -142,8 +149,8 @@ const DropdownUser = () => {
                 fill=""
               />
             </svg>
-            Log Out
-          </Link>
+            {dictionary?.HEADER_toggle_i4}
+          </div>
         </div>
       )}
     </ClickOutside>

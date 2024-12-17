@@ -1,11 +1,23 @@
 "use client"
 
 import Image from "next/image";
+import Cookies from "js-cookie";
 import { Product } from "@/types/product";
-import { getAll } from "@/utils/apis";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { languages } from "@/utils/constant";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/utils/route";
 
-const ProductPage = () => {
+const ProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }) => {
+  const router = useRouter();
+  useEffect(() => {
+    const adminCC = Cookies.get("admincookie");
+    if (!adminCC) {
+      router.push(`/${lang}${ROUTES.LOGIN}`);
+    }
+  }, [router, lang]);
+
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -241,7 +253,29 @@ const ProductPage = () => {
 
   const fetchProducts = async () => {
     try {
-      const data = await getAll("https://n8n.khiemfle.com/webhook/5c404ea1-4a57-4c0a-8628-3088d00abe64");
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      const raw = JSON.stringify({
+        method: "GET",
+        lang: lang
+      });
+
+      const requestOptions: RequestInit = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      const response = await fetch(
+        "https://n8n.khiemfle.com/webhook/b68e20ce-4e9a-4d96-8c48-c28f61bdc4cb",
+        requestOptions
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const data = await response.json();
       const transformedProducts: Product[] = data.map((item: any) => ({
         row: item.row_number,
         id: item.id,
@@ -271,6 +305,43 @@ const ProductPage = () => {
     fetchProducts();
   }, []);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const [currentLang, setCurrentLang] = useState(
+    () => languages.find((l) => l.lang === lang) || languages[0],
+  );
+
+  const handleLanguageChange = (lang: any) => {
+    const selectedLang = languages.find((l) => l.lang === lang);
+    if (selectedLang) {
+      setCurrentLang(selectedLang);
+    }
+    setIsOpen(false);
+  };
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleClickOutside = (event: any) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
   const SkeletonProduct = () => {
     return (
       <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5 animate-pulse">
@@ -294,209 +365,270 @@ const ProductPage = () => {
   };
 
   return (
-    <div className="rounded-md border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-      <div className="px-4 py-6 md:px-6 xl:px-7.5 flex justify-between items-center w-full">
-        <h4 className="text-xl font-semibold text-black dark:text-white">
-          DANH SÁCH SẢN PHẨM
-        </h4>
-        <button
-          className="bg-primary px-4 py-1 text-white rounded-lg"
-          onClick={handleOpenCreateModal}>
-          + Sản phẩm mới
-        </button>
-      </div>
-      <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
-        <div className="col-span-3 flex items-center">
-          <p className="font-medium">Tên sản phẩm</p>
-        </div>
-        <div className="col-span-2 hidden items-center sm:flex">
-          <p className="font-medium">Danh mục</p>
-        </div>
-        <div className="col-span-2 flex items-center">
-          <p className="font-medium">Giá</p>
-        </div>
-        <div className="col-span-1 flex items-center">
-          <p className="font-medium">Mô tả</p>
-        </div>
-      </div>
-      {isLoading ? (
-        Array.from({ length: 6 }).map((_, index) => (
-          <SkeletonProduct key={index} />
-        ))
-      ) : (
-        products.map((product: Product) => (
+    <div>
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="text-title-md2 font-semibold text-black dark:text-white">
+          {dictionary?.PRODUCT_title}
+        </h2>
+        <div
+          className="relative"
+          ref={dropdownRef}
+        >
           <div
-            className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5 cursor-pointer hover:bg-gray-50"
-            key={product.id}
-            onClick={() => setSelectedProduct(product)}>
-            <div className="col-span-3 flex items-center pr-24">
-              <div className="grid grid-cols-4 gap-4 items-center">
-                <div className="w-16 h-16 col-span-1 relative aspect-square rounded-lg overflow-hidden">
-                  <Image
-                    src={product.images[0]}
-                    alt="img"
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-lg object-cover"
-                  />
-                </div>
-                <p className="col-span-3 text-sm text-black dark:text-white">
-                  {product.name}
-                </p>
-              </div>
+            onClick={toggleDropdown}
+            className="flex cursor-pointer flex-row items-center justify-center gap-1 rounded-lg bg-white bg-opacity-60 px-2 py-1"
+          >
+            <Image
+              className=""
+              src={currentLang.flag}
+              alt={currentLang.label}
+              width={23}
+              height={23}
+            />
+            <div
+              className={`mt-1 transition-transform duration-300 ${isOpen ? "-translate-y-0.5" : "-rotate-90"} mt-1`}
+            >
+              <svg
+                className="-mr-1 size-5 text-gray-400"
+                viewBox="0 0 20 20"
+                fill="black"
+                aria-hidden="true"
+                data-slot="icon"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+          </div>
+
+          {isOpen && (
+            <ul className="absolute right-0 z-10 mt-2 w-[58px] origin-top-right rounded-md bg-white bg-opacity-80 shadow-lg ring-1 ring-black/5 focus:outline-none">
+              {languages
+                .filter(({ lang }) => lang !== currentLang.lang)
+                .map(({ lang, label, flag }) => (
+                  <Link href={`/${lang}${ROUTES.PRODUCT}`}>
+                    <li
+                      key={lang}
+                      className="m-3 flex justify-center"
+                      onClick={() => handleLanguageChange(lang)}
+                    >
+                      <Image src={flag} alt={label} width={23} height={23} />
+                    </li>
+                  </Link>
+                ))}
+            </ul>
+          )}
+        </div>
+      </div>
+      <div className="flex flex-col gap-10">
+        <div className="rounded-md border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="px-4 py-6 md:px-6 xl:px-7.5 flex justify-between items-center w-full">
+            <h4 className="text-xl font-semibold text-black dark:text-white">
+              {dictionary?.PRODUCT_table_title_1}
+            </h4>
+            <button
+              className="bg-primary px-4 py-1 text-white rounded-lg"
+              onClick={handleOpenCreateModal}>
+              + {dictionary?.PRODUCT_table_title_2}
+            </button>
+          </div>
+          <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
+            <div className="col-span-3 flex items-center">
+              <p className="font-medium">{dictionary?.PRODUCT_table_header[0]}</p>
             </div>
             <div className="col-span-2 hidden items-center sm:flex">
-              <p className="text-sm text-black dark:text-white">
-                {product.category}
-              </p>
+              <p className="font-medium">{dictionary?.PRODUCT_table_header[1]}</p>
             </div>
             <div className="col-span-2 flex items-center">
-              <p className="text-sm text-black dark:text-white">
-                {Intl.NumberFormat('de-DE').format(product.price)} VND
-              </p>
+              <p className="font-medium">{dictionary?.PRODUCT_table_header[2]}</p>
             </div>
-            <div className="col-span-1 flex items-center" onClick={() => handleOpenUpdateModal(product)}>
-              <p className="text-sm text-[#eee] px-4 py-1 rounded-md truncate bg-[rgb(29,36,51)]">
-                Chi tiết
-              </p>
+            <div className="col-span-1 flex items-center">
+              <p className="font-medium">{dictionary?.PRODUCT_table_header[3]}</p>
             </div>
           </div>
-        ))
-      )}
-      {isCreateModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center mt-15">
-          <div className="bg-white p-6 rounded-lg w-1/3">
-            <h2 className="text-xl font-semibold mb-6">Tạo Sản Phẩm</h2>
-
-            {/* Name Input */}
-            <textarea
-              name="name"
-              placeholder="Tên sản phẩm"
-              value={newProduct.name}
-              onChange={handleInputChange}
-              className="w-full mb-2 px-3 py-2 border rounded-lg text-sm h-[80px]"
-            />
-
-            {/* Category Select */}
-            <select
-              name="category"
-              value={newProduct.category}
-              onChange={handleInputChange}
-              className="w-full mb-4 px-3 py-2 border rounded-lg"
-            >
-              <option value="">Chọn danh mục</option>
-              {categories.map((category, index) => (
-                <option key={index} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-
-            {/* Price Input */}
-            <input
-              name="price"
-              type="number"
-              placeholder="Giá"
-              value={newProduct.price}
-              onChange={handleInputChange}
-              className="w-full mb-4 px-3 py-2 border rounded-lg"
-            />
-
-            {/* Description Input */}
-            <textarea
-              name="description"
-              placeholder="Mô tả"
-              value={newProduct.description}
-              onChange={handleInputChange}
-              className="w-full mb-2 px-3 py-2 border rounded-lg text-sm"
-              rows={5}
-            />
-
-            {/* Image Upload */}
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="w-full mb-4 px-3 py-2 border rounded-lg"
-            />
-
-            {/* Display Selected Images */}
-            <div className="grid grid-cols-6 gap-2 mb-4">
-              {localImages.map((image, index) => (
-                <div key={index} className="relative aspect-square rounded-lg overflow-hidden">
-                  <img
-                    src={URL.createObjectURL(image)}
-                    alt={`uploaded-${index}`}
-                    className="object-cover w-full h-full rounded-lg"
-                  />
+          {isLoading ? (
+            Array.from({ length: 6 }).map((_, index) => (
+              <SkeletonProduct key={index} />
+            ))
+          ) : (
+            products.map((product: Product) => (
+              <div
+                className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5 cursor-pointer hover:bg-gray-50"
+                key={product.id}
+                onClick={() => setSelectedProduct(product)}>
+                <div className="col-span-3 flex items-center pr-24">
+                  <div className="grid grid-cols-4 gap-4 items-center">
+                    <div className="w-16 h-16 col-span-1 relative aspect-square rounded-lg overflow-hidden">
+                      <Image
+                        src={product.images[0]}
+                        alt="img"
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-lg object-cover"
+                      />
+                    </div>
+                    <p className="col-span-3 text-sm text-black dark:text-white">
+                      {product.name}
+                    </p>
+                  </div>
                 </div>
-              ))}
-            </div>
+                <div className="col-span-2 hidden items-center sm:flex">
+                  <p className="text-sm text-black dark:text-white">
+                    {product.category}
+                  </p>
+                </div>
+                <div className="col-span-2 flex items-center">
+                  <p className="text-sm text-black dark:text-white">
+                    {Intl.NumberFormat('de-DE').format(product.price)} VND
+                  </p>
+                </div>
+                <div className="col-span-1 flex items-center" onClick={() => handleOpenUpdateModal(product)}>
+                  <p className="text-sm text-[#eee] px-4 py-1 rounded-md truncate bg-[rgb(29,36,51)]">
+                    {dictionary?.PRODUCT_detail_btn}
+                  </p>
+                </div>
+              </div>
+            ))
+          )}
+          {isCreateModalOpen && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center mt-15">
+              <div className="bg-white p-6 rounded-lg w-1/3">
+                <h2 className="text-xl font-semibold mb-6">{dictionary?.PRODUCT_modal_title_create}</h2>
 
-            {/* Action Buttons */}
-            <div className="flex justify-end gap-4.5">
-              <button
-                className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                onClick={handleCloseCreateModal}
-              >
-                Huỷ
-              </button>
-              <button
-                className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                onClick={handleCreateProduct}
-                disabled={isSaving}
-              >
-                {isSaving ? "Đang lưu..." : "Lưu"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      {isUpdateModalOpen && selectedProduct && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center mt-15">
-          <div className="bg-white p-6 rounded-lg w-1/3">
-            <h2 className="text-xl font-semibold mb-6">Chỉnh Sửa Sản Phẩm</h2>
-            <div className="grid grid-cols-6 gap-2 mb-4">
-              {images.map((image: string, index: number) => (
-                <div key={index} className="relative aspect-square rounded-lg overflow-hidden">
-                  <Image src={image} alt={`Product Image ${index}`} fill style={{ objectFit: 'cover' }} />
+                {/* Name Input */}
+                <textarea
+                  name="name"
+                  placeholder={dictionary?.PRODUCT_modal_pro_name}
+                  value={newProduct.name}
+                  onChange={handleInputChange}
+                  className="w-full mb-2 px-3 py-2 border rounded-lg text-sm h-[80px]"
+                />
+
+                {/* Category Select */}
+                <select
+                  name="category"
+                  value={newProduct.category}
+                  onChange={handleInputChange}
+                  className="w-full mb-4 px-3 py-2 border rounded-lg"
+                >
+                  <option value="">{dictionary?.PRODUCT_modal_select_cate}</option>
+                  {categories.map((category, index) => (
+                    <option key={index} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+
+                {/* Price Input */}
+                <input
+                  name="price"
+                  type="number"
+                  placeholder={dictionary?.PRODUCT_table_header[2]}
+                  value={newProduct.price}
+                  onChange={handleInputChange}
+                  className="w-full mb-4 px-3 py-2 border rounded-lg"
+                />
+
+                {/* Description Input */}
+                <textarea
+                  name="description"
+                  placeholder={dictionary?.PRODUCT_table_header[3]}
+                  value={newProduct.description}
+                  onChange={handleInputChange}
+                  className="w-full mb-2 px-3 py-2 border rounded-lg text-sm"
+                  rows={5}
+                />
+
+                {/* Image Upload */}
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="w-full mb-4 px-3 py-2 border rounded-lg"
+                />
+
+                {/* Display Selected Images */}
+                <div className="grid grid-cols-6 gap-2 mb-4">
+                  {localImages.map((image, index) => (
+                    <div key={index} className="relative aspect-square rounded-lg overflow-hidden">
+                      <img
+                        src={URL.createObjectURL(image)}
+                        alt={`uploaded-${index}`}
+                        className="object-cover w-full h-full rounded-lg"
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex justify-end gap-4.5">
                   <button
-                    onClick={() => handleDeleteImage(index)}
-                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex justify-center items-center">
-                    x
+                    className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                    onClick={handleCloseCreateModal}
+                  >
+                    {dictionary?.PRODUCT_cancel_btn}
+                  </button>
+                  <button
+                    className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                    onClick={handleCreateProduct}
+                    disabled={isSaving}
+                  >
+                    {isSaving ? `${dictionary?.PRODUCT_saving_btn}...` : `${dictionary?.PRODUCT_save_btn}`}
                   </button>
                 </div>
-              ))}
-            </div>
-            <input type="file" multiple accept="image/*" onChange={handleImageUpload} className="w-full mb-4"
-            />
-            <textarea defaultValue={selectedProduct?.name} onChange={(e) => setSelectedProduct({ ...selectedProduct, name: e.target.value })} className="w-full mb-2 px-3 py-2 border rounded-lg text-sm h-[80px]" />
-            <select value={selectedProduct?.category} onChange={(e) => setSelectedProduct({ ...selectedProduct, category: e.target.value })} className="w-full mb-4 px-3 py-2 border rounded-lg text-sm">
-              {categories.map((category, index) => (
-                <option key={index} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-            <input type="number" value={selectedProduct?.price} onChange={(e) => setSelectedProduct({ ...selectedProduct, price: +e.target.value })} className="w-full mb-4 px-3 py-2 border rounded-lg text-sm" />
-            <textarea defaultValue={selectedProduct?.description} onChange={(e) => setSelectedProduct({ ...selectedProduct, description: e.target.value })} className="w-full mb-4 px-3 py-2 border rounded-lg text-sm" rows={5} />
-            <div className="flex justify-between gap-4.5">
-              <button className="flex justify-center rounded border border-stroke px-6 py-2 bg-red-500 hover:bg-opacity-90 font-medium text-gray" onClick={handleDeleteProduct}>
-                {isDelete ? "Đang xóa..." : "Xóa"}
-              </button>
-              <div className="flex gap-4">
-                <button className="flex justify-center rounded border border-stroke px-6 py-2" onClick={handleCloseUpdateModal}>
-                  Huỷ
-                </button>
-                <button className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90" onClick={handleUpdateProduct}>
-                  {isSaving ? "Đang lưu..." : "Lưu"}
-                </button>
               </div>
             </div>
-          </div>
+          )}
+          {isUpdateModalOpen && selectedProduct && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center mt-15">
+              <div className="bg-white p-6 rounded-lg w-1/3">
+                <h2 className="text-xl font-semibold mb-6">{dictionary?.PRODUCT_modal_title}</h2>
+                <div className="grid grid-cols-6 gap-2 mb-4">
+                  {images.map((image: string, index: number) => (
+                    <div key={index} className="relative aspect-square rounded-lg overflow-hidden">
+                      <Image src={image} alt={`Product Image ${index}`} fill style={{ objectFit: 'cover' }} />
+                      <button
+                        onClick={() => handleDeleteImage(index)}
+                        className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex justify-center items-center">
+                        x
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <input type="file" multiple accept="image/*" onChange={handleImageUpload} className="w-full mb-4"
+                />
+                <textarea defaultValue={selectedProduct?.name} onChange={(e) => setSelectedProduct({ ...selectedProduct, name: e.target.value })} className="w-full mb-2 px-3 py-2 border rounded-lg text-sm h-[80px]" />
+                <select value={selectedProduct?.category} onChange={(e) => setSelectedProduct({ ...selectedProduct, category: e.target.value })} className="w-full mb-4 px-3 py-2 border rounded-lg text-sm">
+                  {categories.map((category, index) => (
+                    <option key={index} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+                <input type="number" value={selectedProduct?.price} onChange={(e) => setSelectedProduct({ ...selectedProduct, price: +e.target.value })} className="w-full mb-4 px-3 py-2 border rounded-lg text-sm" />
+                <textarea defaultValue={selectedProduct?.description} onChange={(e) => setSelectedProduct({ ...selectedProduct, description: e.target.value })} className="w-full mb-4 px-3 py-2 border rounded-lg text-sm" rows={5} />
+                <div className="flex justify-between gap-4.5">
+                  <button className="flex justify-center rounded border border-stroke px-6 py-2 bg-red-500 hover:bg-opacity-90 font-medium text-gray" onClick={handleDeleteProduct}>
+                    {isDelete ? `${dictionary?.PRODUCT_deleting_btn}...` : `${dictionary?.PRODUCT_delete_btn}`}
+                  </button>
+                  <div className="flex gap-4">
+                    <button className="flex justify-center rounded border border-stroke px-6 py-2" onClick={handleCloseUpdateModal}>
+                      {dictionary?.PRODUCT_cancel_btn}
+                    </button>
+                    <button className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90" onClick={handleUpdateProduct}>
+                      {isSaving ? `${dictionary?.PRODUCT_saving_btn}...` : `${dictionary?.PRODUCT_save_btn}`}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

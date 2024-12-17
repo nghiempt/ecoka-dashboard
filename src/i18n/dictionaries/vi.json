@@ -1,0 +1,73 @@
+{
+  "LOGIN_title_1": "Đăng nhập để vào trang quản trị",
+  "LOGIN_title_2": "Đăng nhập vào Ecoka",
+  "LOGIN_email": "Email",
+  "LOGIN_password": "Mật khẩu",
+  "LOGIN_button": "Đăng nhập",
+  "HEADER_search": "Tìm kiếm",
+  "HEADER_toggle_i1": "Tài Khoản",
+  "HEADER_toggle_i2": "Liên lạc",
+  "HEADER_toggle_i3": "Cài đặt tài khoản",
+  "HEADER_toggle_i4": "Đăng xuất",
+  "PRODUCT_title": "Sản Phẩm",
+  "PRODUCT_table_title_1": "DANH SÁCH SẢN PHẨM",
+  "PRODUCT_table_title_2": "Sản phẩm mới",
+  "PRODUCT_modal_title_create": "Tạo Sản Phẩm",
+  "PRODUCT_modal_pro_name": "Tên sản phẩm",
+  "PRODUCT_modal_select_cate": "Chọn danh mục",
+  "PRODUCT_modal_description": "Mô tả",
+  "PRODUCT_table_header": [
+    "Tên sản phẩm",
+    "Danh mục",
+    "Giá",
+    "Mô tả"
+  ],
+  "PRODUCT_detail_btn": "Chi tiết",
+  "PRODUCT_modal_title": "Chỉnh Sửa Sản Phẩm",
+  "PRODUCT_file_btn": "Chọn tệp",
+  "PRODUCT_file_alt": "Không có tệp nào được chọn",
+  "PRODUCT_deleting_btn": "Đang xóa",
+  "PRODUCT_delete_btn": "Xóa",
+  "PRODUCT_cancel_btn": "Hủy",
+  "PRODUCT_saving_btn": "Đang lưu",
+  "PRODUCT_save_btn": "Lưu",
+  "BLOG_title": "Bài Viết",
+  "BLOG_table_title_1": "DANH SÁCH BÀI VIẾT",
+  "BLOG_table_title_2": "Bài viết mới",
+  "BLOG_modal_title_create": "Tạo Bài Viết",
+  "BLOG_modal_pro_name": "Tiêu đề",
+  "BLOG_modal_author": "Tác giả",
+  "BLOG_modal_content": "Nội dung",
+  "BLOG_modal_detail_blog": "Chi tiết Bài Viết",
+  "BLOG_modal_detail_name": "Tiêu đề Phần",
+  "BLOG_modal_detail_content": "Nội dung Phần",
+  "BLOG_table_header": [
+    "Tiêu đề",
+    "Tác giả",
+    "Ngày đăng",
+    "Hành động"
+  ],
+  "BLOG_modal_title_edit": "Chỉnh Sửa Bài Viết",
+  "BLOG_modal_description_edit": "Nhập mô tả bài viết",
+  "ESG_section_1": [
+    "MÔI TRƯỜNG",
+    "ECOKA cam kết bảo vệ môi trường thông qua việc sử dụng các nguyên liệu 100% tự nhiên như lục bình để sản xuất túi xách thủ công. Nguyên liệu này không chỉ thân thiện với môi trường mà còn có khả năng tự phân hủy sau một thời gian dài tiếp xúc với thiên nhiên, giảm thiểu rác thải nhựa và các chất ô nhiễm. Quy trình sản xuất của ECOKA được thiết kế để tối ưu hóa tài nguyên, hạn chế tiêu thụ năng lượng và nước, góp phần vào việc bảo tồn hệ sinh thái tự nhiên."
+  ],
+  "ESG_section_2": [
+    "XÃ HỘI",
+    "ECOKA tạo việc làm ổn định cho các nghệ nhân tại miền Tây, nơi nổi tiếng với kỹ năng thủ công truyền thống. Công ty không chỉ giúp bảo tồn và phát triển nghề thủ công mỹ nghệ truyền thống mà còn nâng cao đời sống kinh tế cho người lao động địa phương. Ngoài ra, ECOKA đóng góp vào các hoạt động cộng đồng, xây dựng môi trường làm việc công bằng và hỗ trợ các sáng kiến phát triển bền vững cho cộng đồng."
+  ],
+  "ESG_section_3": [
+    "QUẢN TRỊ",
+    "ECOKA thực hiện các chính sách quản trị minh bạch và có trách nhiệm, đảm bảo sự phát triển bền vững và tuân thủ các quy định pháp luật về lao động và môi trường. Công ty luôn cam kết duy trì đạo đức kinh doanh cao, tạo ra các sản phẩm chất lượng đáp ứng tiêu chuẩn quốc tế, đồng thời không ngừng cải tiến quy trình sản xuất để tăng cường hiệu suất và giảm thiểu tác động tiêu cực đến môi trường và xã hội."
+  ],
+  "COMPANY_title": "Công Ty",
+  "COMPANY_table_title_1": "THÔNG TIN CÔNG TY",
+  "COMPANY_table_label": [
+    "Tên công ty",
+    "Số điện thoại",
+    "Địa chỉ email",
+    "Địa chỉ",
+    "Mô tả"
+  ]
+}

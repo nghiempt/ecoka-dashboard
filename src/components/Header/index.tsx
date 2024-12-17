@@ -1,11 +1,11 @@
-import Link from "next/link";
 import DarkModeSwitcher from "./DarkModeSwitcher";
 import DropdownMessage from "./DropdownMessage";
 import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
-import Image from "next/image";
 
 const Header = (props: {
+  lang: string;
+  dictionary: any;
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
@@ -78,7 +78,7 @@ const Header = (props: {
 
               <input
                 type="text"
-                placeholder="Tìm kiếm"
+                placeholder={props?.dictionary?.HEADER_search}
                 className="w-full bg-transparent pl-9 pr-4 font-medium focus:outline-none xl:w-125"
               />
             </div>
@@ -91,7 +91,7 @@ const Header = (props: {
             <DropdownNotification />
             <DropdownMessage />
           </ul>
-          <DropdownUser />
+          <DropdownUser lang={props?.lang} dictionary={props?.dictionary} />
         </div>
       </div>
     </header>

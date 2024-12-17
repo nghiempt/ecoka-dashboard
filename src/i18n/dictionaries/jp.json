@@ -1,0 +1,73 @@
+{
+  "LOGIN_title_1": "管理ページにログインする",
+  "LOGIN_title_2": "Ecokaにログインする",
+  "LOGIN_email": "メールアドレス",
+  "LOGIN_password": "パスワード",
+  "LOGIN_button": "ログイン",
+  "HEADER_search": "検索",
+  "HEADER_toggle_i1": "アカウント",
+  "HEADER_toggle_i2": "連絡先",
+  "HEADER_toggle_i3": "アカウント設定",
+  "HEADER_toggle_i4": "ログアウト",
+  "PRODUCT_title": "製品",
+  "PRODUCT_table_title_1": "製品リスト",
+  "PRODUCT_table_title_2": "新製品",
+  "PRODUCT_modal_title_create": "製品を作成する",
+  "PRODUCT_modal_pro_name": "製品名",
+  "PRODUCT_modal_select_cate": "カテゴリーを選択",
+  "PRODUCT_modal_description": "説明",
+  "PRODUCT_table_header": [
+    "製品名",
+    "カテゴリー",
+    "価格",
+    "説明"
+  ],
+  "PRODUCT_detail_btn": "詳細",
+  "PRODUCT_modal_title": "製品を編集する",
+  "PRODUCT_file_btn": "ファイルを選択",
+  "PRODUCT_file_alt": "ファイルが選択されていません",
+  "PRODUCT_deleting_btn": "削除中",
+  "PRODUCT_delete_btn": "削除",
+  "PRODUCT_cancel_btn": "キャンセル",
+  "PRODUCT_saving_btn": "保存中",
+  "PRODUCT_save_btn": "保存",
+  "BLOG_title": "ブログ",
+  "BLOG_table_title_1": "ブログリスト",
+  "BLOG_table_title_2": "新しいブログ",
+  "BLOG_modal_title_create": "ブログを作成する",
+  "BLOG_modal_pro_name": "タイトル",
+  "BLOG_modal_author": "著者",
+  "BLOG_modal_content": "内容",
+  "BLOG_modal_detail_blog": "ブログの詳細",
+  "BLOG_modal_detail_name": "セクションタイトル",
+  "BLOG_modal_detail_content": "セクション内容",
+  "BLOG_table_header": [
+    "タイトル",
+    "著者",
+    "投稿日",
+    "アクション"
+  ],
+  "BLOG_modal_title_edit": "ブログを編集する",
+  "BLOG_modal_description_edit": "ブログの説明を入力してください",
+  "ESG_section_1": [
+    "環境",
+    "ECOKAは、100％天然素材であるホテイアオイを使用して手作りバッグを製造することで、環境保護に取り組んでいます。この素材は環境に優しいだけでなく、自然環境に長期間さらされると分解されるため、プラスチック廃棄物や汚染物質を削減します。ECOKAの生産プロセスは、資源を最適化し、エネルギーと水の消費を抑え、自然生態系の保全に貢献するよう設計されています。"
+  ],
+  "ESG_section_2": [
+    "社会",
+    "ECOKAは、伝統工芸の技術で有名なメコンデルタ地方の職人に安定した雇用を提供しています。同社は伝統的な工芸品の保存と発展を支援するだけでなく、地元労働者の経済的生活向上にも貢献しています。さらに、ECOKAは地域社会活動に貢献し、公平な職場環境を構築し、地域社会の持続可能な開発イニシアティブを支援しています。"
+  ],
+  "ESG_section_3": [
+    "ガバナンス",
+    "ECOKAは透明性と責任あるガバナンス政策を実施し、持続可能な発展を確保し、労働および環境に関する法規制を遵守しています。同社は高い企業倫理を維持し、国際基準に適合した高品質な製品を提供し、生産プロセスを絶えず改善して効率を高め、環境および社会への悪影響を最小限に抑えることを約束しています。"
+  ],
+  "COMPANY_title": "会社",
+  "COMPANY_table_title_1": "会社情報",
+  "COMPANY_table_label": [
+    "会社名",
+    "電話番号",
+    "メールアドレス",
+    "住所",
+    "説明"
+  ]
+}

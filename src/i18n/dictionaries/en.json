@@ -1,0 +1,73 @@
+{
+  "LOGIN_title_1": "Log in to access the admin page",
+  "LOGIN_title_2": "Log in to Ecoka",
+  "LOGIN_email": "Email",
+  "LOGIN_password": "Password",
+  "LOGIN_button": "Log In",
+  "HEADER_search": "Search",
+  "HEADER_toggle_i1": "Account",
+  "HEADER_toggle_i2": "Contact",
+  "HEADER_toggle_i3": "Account Settings",
+  "HEADER_toggle_i4": "Log Out",
+  "PRODUCT_title": "Product",
+  "PRODUCT_table_title_1": "PRODUCT LIST",
+  "PRODUCT_table_title_2": "New Product",
+  "PRODUCT_modal_title_create": "Create Product",
+  "PRODUCT_modal_pro_name": "Product Name",
+  "PRODUCT_modal_select_cate": "Select Category",
+  "PRODUCT_modal_description": "Description",
+  "PRODUCT_table_header": [
+    "Product Name",
+    "Category",
+    "Price",
+    "Description"
+  ],
+  "PRODUCT_detail_btn": "Details",
+  "PRODUCT_modal_title": "Edit Product",
+  "PRODUCT_file_btn": "Choose File",
+  "PRODUCT_file_alt": "No file selected",
+  "PRODUCT_deleting_btn": "Deleting",
+  "PRODUCT_delete_btn": "Delete",
+  "PRODUCT_cancel_btn": "Cancel",
+  "PRODUCT_saving_btn": "Saving",
+  "PRODUCT_save_btn": "Save",
+  "BLOG_title": "Blog",
+  "BLOG_table_title_1": "BLOG LIST",
+  "BLOG_table_title_2": "New Blog",
+  "BLOG_modal_title_create": "Create Blog",
+  "BLOG_modal_pro_name": "Title",
+  "BLOG_modal_author": "Author",
+  "BLOG_modal_content": "Content",
+  "BLOG_modal_detail_blog": "Blog Details",
+  "BLOG_modal_detail_name": "Section Title",
+  "BLOG_modal_detail_content": "Section Content",
+  "BLOG_table_header": [
+    "Title",
+    "Author",
+    "Date Posted",
+    "Actions"
+  ],
+  "BLOG_modal_title_edit": "Edit Blog",
+  "BLOG_modal_description_edit": "Enter blog description",
+  "ESG_section_1": [
+    "ENVIRONMENT",
+    "ECOKA is committed to protecting the environment by using 100% natural materials such as water hyacinth to produce handcrafted bags. These materials are not only eco-friendly but also biodegradable after prolonged exposure to nature, reducing plastic waste and pollutants. ECOKA's production process is designed to optimize resources, limit energy and water consumption, and contribute to preserving natural ecosystems."
+  ],
+  "ESG_section_2": [
+    "SOCIAL",
+    "ECOKA provides stable jobs for artisans in the Mekong Delta, a region renowned for its traditional handicraft skills. The company not only helps preserve and develop traditional crafts but also improves the economic well-being of local workers. Additionally, ECOKA contributes to community activities, builds a fair working environment, and supports sustainable development initiatives for the community."
+  ],
+  "ESG_section_3": [
+    "GOVERNANCE",
+    "ECOKA implements transparent and responsible governance policies, ensuring sustainable development and compliance with labor and environmental regulations. The company is committed to maintaining high business ethics, producing high-quality products that meet international standards, and continuously improving production processes to enhance efficiency and minimize negative impacts on the environment and society."
+  ],
+  "COMPANY_title": "Company",
+  "COMPANY_table_title_1": "COMPANY INFORMATION",
+  "COMPANY_table_label": [
+    "Company Name",
+    "Phone Number",
+    "Email Address",
+    "Address",
+    "Description"
+  ]
+}

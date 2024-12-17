@@ -6,8 +6,11 @@ import Image from "next/image";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import ClickOutside from "@/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { ROUTES } from "@/utils/route";
 
 interface SidebarProps {
+  lang: string;
+  page: string;
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
 }
@@ -44,7 +47,9 @@ const menuGroups = [
           </svg>
         ),
         label: "Sản Phẩm",
-        route: "/product",
+        label_en: "Products",
+        label_jp: "製品",
+        route: ROUTES.PRODUCT,
       },
       {
         icon: (
@@ -75,7 +80,9 @@ const menuGroups = [
           </svg>
         ),
         label: "Bài Viết",
-        route: "/blog",
+        label_en: "Blogs",
+        label_jp: "記事",
+        route: ROUTES.BLOG,
       },
       {
         icon: (
@@ -105,7 +112,9 @@ const menuGroups = [
           </svg>
         ),
         label: "ESG",
-        route: "/esg",
+        label_en: "ESG",
+        label_jp: "ESG",
+        route: ROUTES.ESG,
       },
       {
         icon: (
@@ -131,13 +140,15 @@ const menuGroups = [
           </svg>
         ),
         label: "Công Ty",
-        route: "/company",
+        label_en: "Company",
+        label_jp: "会社",
+        route: ROUTES.COMPANY,
       },
     ],
   },
 ];
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+const Sidebar = ({ lang, page, sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
 
   return (
@@ -147,7 +158,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           }`}
       >
         <div className="flex items-center justify-center px-6 py-5.5 lg:pt-10">
-          <Link href="/">
+          <Link href={ROUTES.HOME}>
             <Image
               width={100}
               height={100}
@@ -190,6 +201,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       item={menuItem}
                       pageName={pageName}
                       setPageName={setPageName}
+                      lang={lang}
                     />
                   ))}
                 </ul>
