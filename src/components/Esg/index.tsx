@@ -32,6 +32,8 @@ const EsgPage = ({ lang, dictionary }: { lang: string, dictionary: any }) => {
     const [previewThumbnails, setPreviewThumbnails] = useState<Record<number, string>>({});
 
     const apiUrl = "https://n8n.khiemfle.com/webhook/aa7f04f4-7833-49c2-8c86-7a043f4a8a5a";
+    const apiUrlEn = "https://n8n.khiemfle.com/webhook/2c86f5ea-55cb-434f-a0d6-c6c613eddd86";
+    const apiUrlJp = "https://n8n.khiemfle.com/webhook/4f49ac4b-f49e-4612-877f-fd90c8618741";
     const apiGetESG = "https://n8n.khiemfle.com/webhook/ec20cfc2-50bf-461c-b625-5f0eb0a72648";
 
     const handleImageUpload = (

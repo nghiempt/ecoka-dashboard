@@ -36,7 +36,22 @@ const ProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }) =>
   });
 
   const apiUrl = "https://n8n.khiemfle.com/webhook/5c404ea1-4a57-4c0a-8628-3088d00abe64";
+  const apiUrlEn = "https://n8n.khiemfle.com/webhook/92ea60bc-daae-4852-b325-8f9ccb2b7d3a";
+  const apiUrlJp = "https://n8n.khiemfle.com/webhook/4c50f778-25b0-49f8-bfad-4d825513feef";
   const categories = ['Trang Trí Nhà Cửa', 'Nhà Bếp', 'Nội Thất', 'Thời Trang'];
+
+  const getUrl = () => {
+    switch (lang) {
+      case "vi":
+        return apiUrl
+      case "en":
+        return apiUrlEn
+      case "jp":
+        return apiUrlJp
+      default:
+        return apiUrl
+    }
+  }
 
   const handleOpenCreateModal = () => {
     setIsCreateModalOpen(true);
@@ -191,7 +206,7 @@ const ProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }) =>
     };
     try {
       const response = await fetch(
-        "https://n8n.khiemfle.com/webhook/5c404ea1-4a57-4c0a-8628-3088d00abe64",
+        getUrl(),
         requestOptions
       );
       if (!response.ok) {
@@ -269,7 +284,7 @@ const ProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }) =>
       };
 
       const response = await fetch(
-        "https://n8n.khiemfle.com/webhook/b68e20ce-4e9a-4d96-8c48-c28f61bdc4cb",
+        getUrl(),
         requestOptions
       );
       if (!response.ok) {

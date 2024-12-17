@@ -9,6 +9,8 @@ import { useEffect, useRef, useState } from "react";
 import { ROUTES } from "@/utils/route";
 
 const apiUrl = "https://n8n.khiemfle.com/webhook/ff9f5835-275b-4ecb-a4be-0392ae325ca6";
+const apiUrlEn = "https://n8n.khiemfle.com/webhook/f3f3432e-d4cb-4349-8163-9cc5f3e2fe61";
+const apiUrlJp = "https://n8n.khiemfle.com/webhook/be027a9d-d87e-4ef9-9cd6-e7e3285088bb";
 const apiGetBlog = "https://n8n.khiemfle.com/webhook/f3608e3a-c00a-415d-b7e2-d6184b5d27d3";
 
 const BlogPage = ({ lang, dictionary }: { lang: string; dictionary: any }) => {

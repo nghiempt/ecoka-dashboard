@@ -41,6 +41,8 @@ const CompanyPage = ({ lang, dictionary }: { lang: string, dictionary: any }) =>
     const [isUpdate, setIsUpdate] = useState(false);
 
     const apiUrl = "https://n8n.khiemfle.com/webhook/e984f33a-ffd7-48b7-bea7-3899a97e284e";
+    const apiUrlEn = "https://n8n.khiemfle.com/webhook/753e0ec9-7123-4714-9ffa-0080505f3ef5";
+    const apiUrlJp = "https://n8n.khiemfle.com/webhook/63de9b9b-c7b7-4ae1-8995-51cba47553bd";
     const apiGetCompany = "https://n8n.khiemfle.com/webhook/51f585dd-2f58-45cf-8bb8-4cc762a65737";
 
     const handleUpdateCompany = async () => {

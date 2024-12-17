@@ -25,8 +25,8 @@ const LoginPage = ({ page, lang, dictionary }: { page: string, lang: string, dic
   const [loginFail, setLoginFail] = useState("");
 
   const handleLogin = () => {
-    const validEmail = "ecoka@gmail.com"
-    const validPassword = "ecoka123"
+    const validEmail = "admin@ecoka.vn"
+    const validPassword = "Ecoka@123"
     if (!email.trim() || !password.trim()) {
       if (lang === 'vi') {
         setLoginFail("Email hoặc mật khẩu không được trống.")
