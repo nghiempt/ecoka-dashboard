@@ -297,7 +297,14 @@ const BlogPage = ({ lang, dictionary }: { lang: string; dictionary: any }) => {
 
   const handleDeleteBlog = async () => {
     if (!selectedBlog) return;
-    const confirmDelete = window.confirm("Bạn có chắc muốn xóa bài viết này?");
+    const confirmationMessage: Record<'vi' | 'en' | 'jp', string> = {
+      vi: "Bạn có chắc muốn xóa sản phẩm này?",
+      en: "Are you sure you want to delete this product?",
+      jp: "この製品を削除してもよろしいですか?",
+    };
+
+    const confirmDelete = window.confirm(confirmationMessage[lang as keyof typeof confirmationMessage] || confirmationMessage.en);
+
     if (confirmDelete) {
       setIsDelete(true);
       const raw = JSON.stringify({
