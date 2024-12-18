@@ -11,7 +11,9 @@ import { ROUTES } from "@/utils/route";
 const apiUrl = "https://n8n.khiemfle.com/webhook/ff9f5835-275b-4ecb-a4be-0392ae325ca6";
 const apiUrlEn = "https://n8n.khiemfle.com/webhook/f3f3432e-d4cb-4349-8163-9cc5f3e2fe61";
 const apiUrlJp = "https://n8n.khiemfle.com/webhook/be027a9d-d87e-4ef9-9cd6-e7e3285088bb";
-const apiGetBlog = "https://n8n.khiemfle.com/webhook/f3608e3a-c00a-415d-b7e2-d6184b5d27d3";
+const apiUrlVi = "https://n8n.khiemfle.com/webhook/f3608e3a-c00a-415d-b7e2-d6184b5d27d3";
+
+
 
 const BlogPage = ({ lang, dictionary }: { lang: string; dictionary: any }) => {
   const router = useRouter();
@@ -52,6 +54,19 @@ const BlogPage = ({ lang, dictionary }: { lang: string; dictionary: any }) => {
     s3_thumbnail: null,
   });
 
+  const getUrl = () => {
+    switch (lang) {
+      case "vi":
+        return apiUrl
+      case "en":
+        return apiUrlEn
+      case "jp":
+        return apiUrlJp
+      default:
+        return apiUrl
+    }
+  }
+
   const fetchBlogs = async () => {
     try {
       const myHeaders = new Headers();
@@ -69,10 +84,11 @@ const BlogPage = ({ lang, dictionary }: { lang: string; dictionary: any }) => {
         redirect: "follow" as RequestRedirect,
       };
 
-      const response = await fetch(apiGetBlog, requestOptions);
+      const response = await fetch(getUrl(), requestOptions);
       const data = await response.json();
       setBlogs(data.reverse());
       setIsLoading(false);
+      console.log("check: ", data)
     } catch (error) {
       console.error("Error fetching blogs:", error);
     }
@@ -163,7 +179,9 @@ const BlogPage = ({ lang, dictionary }: { lang: string; dictionary: any }) => {
         s3_thumbnail: uploadedImageUrls[3] || "",
       });
 
-      const response = await fetch(apiUrl, {
+      console.log("check data: ", raw)
+
+      const response = await fetch(getUrl(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -255,7 +273,7 @@ const BlogPage = ({ lang, dictionary }: { lang: string; dictionary: any }) => {
     });
 
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch(getUrl(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -266,6 +284,7 @@ const BlogPage = ({ lang, dictionary }: { lang: string; dictionary: any }) => {
       if (!response.ok) {
         throw new Error("Failed to update blog");
       }
+
 
       setIsSaving(false);
       handleCloseUpdateModal();
@@ -287,7 +306,7 @@ const BlogPage = ({ lang, dictionary }: { lang: string; dictionary: any }) => {
       });
 
       try {
-        const response = await fetch(apiUrl, {
+        const response = await fetch(getUrl(), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -434,7 +453,7 @@ const BlogPage = ({ lang, dictionary }: { lang: string; dictionary: any }) => {
         <div className="px-4 py-6 md:px-6 xl:px-7.5 flex justify-between items-center w-full">
           <h4 className="text-xl font-semibold text-black dark:text-white">{dictionary?.BLOG_table_title_1}</h4>
           <button className="bg-primary px-4 py-1 text-white rounded-lg" onClick={handleOpenCreateModal}>
-            + {dictionary?.BLOG_table_title_1}
+            + {dictionary?.BLOG_modal_title_create}
           </button>
         </div>
         <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
@@ -464,12 +483,11 @@ const BlogPage = ({ lang, dictionary }: { lang: string; dictionary: any }) => {
                 <div className="grid grid-cols-4 gap-4 items-center">
                   <div className="col-span-1 relative aspect-square rounded-lg overflow-hidden">
                     <Image
-                      src={blog.thumbnail.startsWith("http") ? blog.thumbnail : "/default-image.jpg"}
+                      src={blog.thumbnail.startsWith("http") ? blog.thumbnail : "https://res.cloudinary.com/farmcode/image/upload/v1734511069/ecoka/shopee_itjwhe.png"}
                       alt="img"
-                      fill
                       style={{ objectFit: "cover" }}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="rounded-lg"
+                      width={1000} height={1000}
+                      className="rounded-lg w-16 h-16"
                     />
                   </div>
                   <p className="col-span-3 text-sm text-black dark:text-white">{blog.title}</p>

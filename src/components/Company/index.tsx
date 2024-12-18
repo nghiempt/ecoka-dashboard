@@ -45,6 +45,19 @@ const CompanyPage = ({ lang, dictionary }: { lang: string, dictionary: any }) =>
     const apiUrlJp = "https://n8n.khiemfle.com/webhook/63de9b9b-c7b7-4ae1-8995-51cba47553bd";
     const apiGetCompany = "https://n8n.khiemfle.com/webhook/51f585dd-2f58-45cf-8bb8-4cc762a65737";
 
+    const getUrl = () => {
+        switch (lang) {
+            case "vi":
+                return apiUrl
+            case "en":
+                return apiUrlEn
+            case "jp":
+                return apiUrlJp
+            default:
+                return apiUrl
+        }
+    }
+
     const handleUpdateCompany = async () => {
         setIsUpdate(true);
         if (!company[0]) {
@@ -69,7 +82,7 @@ const CompanyPage = ({ lang, dictionary }: { lang: string, dictionary: any }) =>
             redirect: "follow" as RequestRedirect
         };
         try {
-            const response = await fetch(apiUrl, requestOptions);
+            const response = await fetch(getUrl(), requestOptions);
             if (!response.ok) {
                 throw new Error("Failed to update company information");
             }
@@ -99,7 +112,7 @@ const CompanyPage = ({ lang, dictionary }: { lang: string, dictionary: any }) =>
                 redirect: "follow",
             };
 
-            const response = await fetch(apiGetCompany, requestOptions);
+            const response = await fetch(getUrl(), requestOptions);
             const data = await response.json();
             const transformedCompany: Company[] = data.map((item: any) => ({
                 id: item.id,

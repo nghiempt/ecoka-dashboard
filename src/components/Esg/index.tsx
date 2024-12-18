@@ -36,6 +36,19 @@ const EsgPage = ({ lang, dictionary }: { lang: string, dictionary: any }) => {
     const apiUrlJp = "https://n8n.khiemfle.com/webhook/4f49ac4b-f49e-4612-877f-fd90c8618741";
     const apiGetESG = "https://n8n.khiemfle.com/webhook/ec20cfc2-50bf-461c-b625-5f0eb0a72648";
 
+    const getUrl = () => {
+        switch (lang) {
+            case "vi":
+                return apiUrl
+            case "en":
+                return apiUrlEn
+            case "jp":
+                return apiUrlJp
+            default:
+                return apiUrl
+        }
+    }
+
     const handleImageUpload = (
         e: React.ChangeEvent<HTMLInputElement>,
         esgId: number
@@ -111,7 +124,7 @@ const EsgPage = ({ lang, dictionary }: { lang: string, dictionary: any }) => {
         };
 
         try {
-            const response = await fetch(apiUrl, requestOptions);
+            const response = await fetch(getUrl(), requestOptions);
             if (!response.ok) {
                 throw new Error("Failed to update ESG information");
             }
@@ -142,7 +155,7 @@ const EsgPage = ({ lang, dictionary }: { lang: string, dictionary: any }) => {
                 body: raw,
                 redirect: "follow",
             };
-            const response = await fetch(apiGetESG, requestOptions);
+            const response = await fetch(getUrl(), requestOptions);
             const data = await response.json();
             const transformedEsgs: ESG[] = data.map((item: any) => ({
                 id: item.id,
