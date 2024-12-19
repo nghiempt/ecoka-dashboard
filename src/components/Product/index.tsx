@@ -43,7 +43,7 @@ const ProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }) =>
     let categories: string[] = [];
     switch (lang) {
       case "vi":
-        categories = ['Trang Trí Nhà Cửa', 'Nhà Bếp', 'Nội Thất', 'Thời Trang'];
+        categories = ['Trang Trí Nhà Cửa', 'Nhà Bếp', 'Nhà Thú Cưng', 'Thời Trang'];
         break;
       case "en":
         categories = ['Home Decoration', 'Kitchen', 'Pet Houses', 'Fashion'];
@@ -625,6 +625,7 @@ const ProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }) =>
               </div>
             </div>
           )}
+
           {isUpdateModalOpen && selectedProduct && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center mt-15">
               <div className="bg-white p-6 rounded-lg w-1/3">
@@ -669,6 +670,7 @@ const ProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }) =>
               </div>
             </div>
           )}
+
         </div>
       </div>
     </div>

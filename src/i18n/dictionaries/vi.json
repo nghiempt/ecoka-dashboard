@@ -69,5 +69,15 @@
     "Địa chỉ email",
     "Địa chỉ",
     "Mô tả"
-  ]
+  ],
+  "MAINPRODUCT_title": "Sản Phẩm Chính",
+  "MAINPRODUCT_table_title": "DANH SÁCH SẢN PHẨM",
+  "MAINPRODUCT_label": [
+    "Tên sản phẩm",
+    "Danh mục",
+    "Giá",
+    "Mô tả"
+  ],
+  "MAINPRODUCT_update_button": "Chi tiết",
+  "MAINPRODUCT_replace_button": "Thay đổi"
 }

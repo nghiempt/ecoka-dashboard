@@ -145,6 +145,15 @@ const menuGroups = [
         label_jp: "会社",
         route: ROUTES.COMPANY,
       },
+      {
+        icon: (
+          <Image className="fill-current" src="https://cdn-icons-png.flaticon.com/128/17821/17821829.png" alt="" width={18} height={19} />
+        ),
+        label: "Sản Phẩm Chính",
+        label_en: "Main Products",
+        label_jp: "主な製品",
+        route: ROUTES.MAINPRODUCT,
+      },
     ],
   },
 ];

@@ -69,5 +69,15 @@
     "Email Address",
     "Address",
     "Description"
-  ]
+  ],
+  "MAINPRODUCT_title": "Main Product",
+  "MAINPRODUCT_table_title": "Product List",
+  "MAINPRODUCT_label": [
+    "Product Name",
+    "Category",
+    "Price",
+    "Description"
+  ],
+  "MAINPRODUCT_update_button": "Details",
+  "MAINPRODUCT_replace_button": "Replace"
 }

@@ -69,5 +69,15 @@
     "メールアドレス",
     "住所",
     "説明"
-  ]
+  ],
+  "MAINPRODUCT_title": "主製品",
+  "MAINPRODUCT_table_title": "製品リスト",
+  "MAINPRODUCT_label": [
+    "製品名",
+    "カテゴリー",
+    "価格",
+    "説明"
+  ],
+  "MAINPRODUCT_update_button": "詳細",
+  "MAINPRODUCT_replace_button": "変更"
 }
