@@ -9,7 +9,6 @@ import { languages } from "@/utils/constant";
 import Image from "next/image";
 import Link from "next/link";
 import { RequestInit } from "next/dist/server/web/spec-extension/request";
-import { IMAGES } from "@/utils/image";
 
 interface MainProducts {
   row_number: number,
@@ -327,7 +326,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
       const data: MainProducts[] = await response.json();
       // console.log("Data fetched from getProductHomePage:", data);
       setHomeProduct(data);
@@ -336,9 +334,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
       console.error("Error in getProductHomePage:", error);
     }
   };
-
-
-
 
   useEffect(() => {
     getProductHomePage();
@@ -369,7 +364,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
 
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
   const [currentLang, setCurrentLang] = useState(
     () => languages.find((l) => l.lang === lang) || languages[0],
   );
