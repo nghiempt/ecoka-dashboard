@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import ClickOutside from "@/components/ClickOutside";
 import { ROUTES } from "@/utils/route";
+import { IMAGES } from "@/utils/image";
 
 const DropdownUser = ({ lang, dictionary }: { lang: string, dictionary: any }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -30,7 +31,7 @@ const DropdownUser = ({ lang, dictionary }: { lang: string, dictionary: any }) =
           <Image
             width={112}
             height={112}
-            src={"/images/logo/favicon.ico"}
+            src={IMAGES.LOGO_CIRCLE}
             style={{
               width: "auto",
               height: "auto",

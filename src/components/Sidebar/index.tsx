@@ -7,6 +7,7 @@ import SidebarItem from "@/components/Sidebar/SidebarItem";
 import ClickOutside from "@/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { ROUTES } from "@/utils/route";
+import { IMAGES } from "@/utils/image";
 
 interface SidebarProps {
   lang: string;
@@ -162,7 +163,7 @@ const Sidebar = ({ lang, page, sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <Image
               width={100}
               height={100}
-              src={"/images/logo/favicon.ico"}
+              src={IMAGES.LOGO_CIRCLE}
               alt="Logo"
               priority
             />
