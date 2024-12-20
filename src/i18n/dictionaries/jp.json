@@ -79,5 +79,8 @@
     "説明"
   ],
   "MAINPRODUCT_update_button": "詳細",
-  "MAINPRODUCT_replace_button": "変更"
+  "MAINPRODUCT_replace_button": "変更",
+  "MAINPRODUCT_replace_modal_title": "カテゴリの製品を置換",
+  "MAINPRODUCT_replace_modal_select": "製品を選択",
+  "MAINPRODUCT_replace_modal_full": "すべての製品が表示されました"
 }

@@ -250,6 +250,7 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
   const handleCloseReplaceModal = () => {
     setIsReplaceModalOpen(false);
     setSelectedProduct(null);
+    setSelectedProductReplace(null);
   };
 
   const fetchProducts = async () => {
@@ -618,7 +619,7 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
           {isReplaceModalOpen && selectedProduct && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center mt-15">
               <div className="bg-white p-6 rounded-lg w-2/4">
-                <h2 className="text-xl font-semibold mb-6">Thay thế sản phẩm cho danh mục</h2>
+                <h2 className="text-xl font-semibold mb-6">{dictionary?.MAINPRODUCT_replace_modal_title} {selectedProduct?.category}</h2>
                 <select id="rpo"
                   className="w-full mb-4 p-2 border border-gray-300 rounded"
                   onChange={(e) => {
@@ -629,7 +630,7 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
                     }
                   }}
                 >
-                  <option selected disabled>Chọn sản phẩm</option>
+                  <option selected disabled>{dictionary?.MAINPRODUCT_replace_modal_select}</option>
                   {products
                     .filter(
                       (product) =>
@@ -647,7 +648,7 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
                         </option>
                       )) :
                     <option key="" disabled>
-                      Tất cả sản phẩm đã được hiển thị
+                      {dictionary?.MAINPRODUCT_replace_modal_full}
                     </option>}
                 </select>
 
@@ -676,9 +677,9 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
 
                     <textarea
                       disabled
-                      defaultValue={selectedProductReplace?.name}
+                      value={selectedProductReplace?.name}
                       onChange={(e) =>
-                        setSelectedProduct({ ...selectedProductReplace, name: e.target.value })
+                        setSelectedProduct({ ...selectedProductReplace, name: +e.target.value })
                       }
                       className="w-full mb-2 px-3 py-2 border rounded-lg text-sm h-[80px]"
                     />
@@ -710,9 +711,9 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
 
                     <textarea
                       disabled
-                      defaultValue={selectedProductReplace?.description}
+                      value={selectedProductReplace?.description}
                       onChange={(e) =>
-                        setSelectedProduct({ ...selectedProductReplace, description: e.target.value })
+                        setSelectedProduct({ ...selectedProductReplace, description: +e.target.value })
                       }
                       className="w-full mb-4 px-3 py-2 border rounded-lg text-sm"
                       rows={5}

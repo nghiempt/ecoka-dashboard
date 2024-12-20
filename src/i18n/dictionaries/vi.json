@@ -79,5 +79,8 @@
     "Mô tả"
   ],
   "MAINPRODUCT_update_button": "Chi tiết",
-  "MAINPRODUCT_replace_button": "Thay đổi"
+  "MAINPRODUCT_replace_button": "Thay đổi",
+  "MAINPRODUCT_replace_modal_title": "Thay thế sản phẩm cho danh mục",
+  "MAINPRODUCT_replace_modal_select": "Chọn sản phẩm",
+  "MAINPRODUCT_replace_modal_full": "Tất cả sản phẩm đã được hiển thị"
 }

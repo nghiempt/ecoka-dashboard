@@ -79,5 +79,8 @@
     "Description"
   ],
   "MAINPRODUCT_update_button": "Details",
-  "MAINPRODUCT_replace_button": "Replace"
+  "MAINPRODUCT_replace_button": "Replace",
+  "MAINPRODUCT_replace_modal_title": "Replace product for category",
+  "MAINPRODUCT_replace_modal_select": "Select product",
+  "MAINPRODUCT_replace_modal_full": "All products have been displayed"
 }
