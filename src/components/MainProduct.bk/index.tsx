@@ -9,7 +9,6 @@ import { languages } from "@/utils/constant";
 import Image from "next/image";
 import Link from "next/link";
 import { RequestInit } from "next/dist/server/web/spec-extension/request";
-import ProductSelection from "./product-selection";
 
 interface MainProducts {
   row_number: number,
@@ -402,6 +401,33 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
           className="relative"
           ref={dropdownRef}
         >
+          <div
+            onClick={toggleDropdown}
+            className="flex cursor-pointer flex-row items-center justify-center gap-1 rounded-lg bg-white bg-opacity-60 px-2 py-1"
+          >
+            <Image
+              className=""
+              src={currentLang.flag}
+              alt={currentLang.label}
+              width={23}
+              height={23}
+            />
+            <div className={`mt-1 transition-transform duration-300 ${isOpen ? "-translate-y-0.5" : "-rotate-90"} mt-1`}>
+              <svg
+                className="-mr-1 size-5 text-gray-400"
+                viewBox="0 0 20 20"
+                fill="black"
+                aria-hidden="true"
+                data-slot="icon"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+          </div>
           {isOpen && (
             <ul className="absolute right-0 z-10 mt-2 w-[58px] origin-top-right rounded-md bg-white bg-opacity-80 shadow-lg ring-1 ring-black/5 focus:outline-none">
               {languages
@@ -423,64 +449,82 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
       </div>
       <div className="flex flex-col gap-10">
         <div className="rounded-md border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="px-4 py-6 md:px-6 xl:px-7.5 flex justify-between items-center w-full">
+            <h4 className="text-xl font-semibold text-black dark:text-white">
+              {dictionary?.MAINPRODUCT_table_title}
+            </h4>
+          </div>
+          <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
+            <div className="col-span-3 flex items-center">
+              <p className="font-medium">{dictionary?.MAINPRODUCT_label[0]}</p>
+            </div>
+            <div className="col-span-2 hidden items-center sm:flex">
+              <p className="font-medium">{dictionary?.MAINPRODUCT_label[1]}</p>
+            </div>
+            <div className="col-span-2 flex items-center">
+              <p className="font-medium">{dictionary?.MAINPRODUCT_label[2]}</p>
+            </div>
+            <div className="col-span-1 flex items-center">
+              <p className="font-medium">{dictionary?.MAINPRODUCT_label[3]}</p>
+            </div>
+          </div>
           {isLoading ? (
             Array.from({ length: 6 }).map((_, index) => (
               <SkeletonProduct key={index} />
             ))
           ) : (
-            <ProductSelection />
-            // filteredProduct.map((product: Product) => (
-            //   <div
-            //     className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5 cursor-pointer hover:bg-gray-50"
-            //     key={product.id}
-            //     onClick={() => setSelectedProduct(product)}>
-            //     <div className="col-span-3 flex items-center pr-24">
-            //       <div className="grid grid-cols-4 gap-4 items-center">
-            //         <div className="w-16 h-16 col-span-1 relative aspect-square rounded-lg overflow-hidden">
-            //           <Image
-            //             src={product.images[0]}
-            //             alt="img"
-            //             layout="fill"
-            //             objectFit="cover"
-            //             className="rounded-lg object-cover"
-            //           />
-            //         </div>
-            //         <p className="col-span-3 text-sm text-black dark:text-white">
-            //           {product.name}
-            //         </p>
-            //       </div>
-            //     </div>
-            //     <div className="col-span-2 hidden items-center sm:flex">
-            //       <p className="text-sm text-black dark:text-white">
-            //         {product.category}
-            //       </p>
-            //     </div>
-            //     <div className="col-span-2 flex items-center">
-            //       <p className="text-sm text-black dark:text-white">
-            //         {Intl.NumberFormat('de-DE').format(product.price)} VND
-            //       </p>
-            //     </div>
-            //     <div className="col-span-1 flex flex-col items-start justify-center gap-2">
-            //       <div className=""
-            //         onClick={() => handleOpenUpdateModal(product)}
-            //       >
-            //         <p className="text-sm text-[#eee] px-4 py-1 rounded-md truncate bg-[rgb(29,36,51)]">
-            //           {dictionary?.MAINPRODUCT_update_button}
-            //         </p>
-            //       </div>
+            filteredProduct.map((product: Product) => (
+              <div
+                className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5 cursor-pointer hover:bg-gray-50"
+                key={product.id}
+                onClick={() => setSelectedProduct(product)}>
+                <div className="col-span-3 flex items-center pr-24">
+                  <div className="grid grid-cols-4 gap-4 items-center">
+                    <div className="w-16 h-16 col-span-1 relative aspect-square rounded-lg overflow-hidden">
+                      <Image
+                        src={product.images[0]}
+                        alt="img"
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-lg object-cover"
+                      />
+                    </div>
+                    <p className="col-span-3 text-sm text-black dark:text-white">
+                      {product.name}
+                    </p>
+                  </div>
+                </div>
+                <div className="col-span-2 hidden items-center sm:flex">
+                  <p className="text-sm text-black dark:text-white">
+                    {product.category}
+                  </p>
+                </div>
+                <div className="col-span-2 flex items-center">
+                  <p className="text-sm text-black dark:text-white">
+                    {Intl.NumberFormat('de-DE').format(product.price)} VND
+                  </p>
+                </div>
+                <div className="col-span-1 flex flex-col items-start justify-center gap-2">
+                  <div className=""
+                    onClick={() => handleOpenUpdateModal(product)}
+                  >
+                    <p className="text-sm text-[#eee] px-4 py-1 rounded-md truncate bg-[rgb(29,36,51)]">
+                      {dictionary?.MAINPRODUCT_update_button}
+                    </p>
+                  </div>
 
-            //       <div className=""
-            //         onClick={() => handleOpenReplaceModal(product)}
-            //       >
-            //         <p className="text-sm text-black px-4 py-1 rounded-md truncate bg-[rgb(222,226,233)]">
-            //           {dictionary?.MAINPRODUCT_replace_button}
-            //         </p>
-            //       </div>
+                  <div className=""
+                    onClick={() => handleOpenReplaceModal(product)}
+                  >
+                    <p className="text-sm text-black px-4 py-1 rounded-md truncate bg-[rgb(222,226,233)]">
+                      {dictionary?.MAINPRODUCT_replace_button}
+                    </p>
+                  </div>
 
-            //     </div>
+                </div>
 
-            //   </div>
-            // ))
+              </div>
+            ))
           )}
           {isUpdateModalOpen && selectedProduct && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center mt-15">
