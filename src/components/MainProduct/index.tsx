@@ -19,6 +19,10 @@ interface MainProducts {
   product_id: number
 }
 
+const apiUrl = "https://n8n.khiemfle.com/webhook/5c404ea1-4a57-4c0a-8628-3088d00abe64";
+const apiUrlEn = "https://n8n.khiemfle.com/webhook/92ea60bc-daae-4852-b325-8f9ccb2b7d3a";
+const apiUrlJp = "https://n8n.khiemfle.com/webhook/4c50f778-25b0-49f8-bfad-4d825513feef";
+
 const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }) => {
   const router = useRouter();
   useEffect(() => {
@@ -27,10 +31,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
       router.push(`/${lang}${ROUTES.LOGIN}`);
     }
   }, [router, lang]);
-
-  const apiUrl = "https://n8n.khiemfle.com/webhook/5c404ea1-4a57-4c0a-8628-3088d00abe64";
-  const apiUrlEn = "https://n8n.khiemfle.com/webhook/92ea60bc-daae-4852-b325-8f9ccb2b7d3a";
-  const apiUrlJp = "https://n8n.khiemfle.com/webhook/4c50f778-25b0-49f8-bfad-4d825513feef";
 
   const getCate = () => {
     let categories: string[] = [];
@@ -66,6 +66,8 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
   }
 
   const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProduct, setFilteredProduct] = useState<Product[]>([]);
+  const [homeProduct, setHomeProduct] = useState<MainProducts[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isReplacing, setIsReplacing] = useState(false);
@@ -77,18 +79,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
   const [productReplacePosition, setProductReplacePosition] = useState(null as any);
   const [images, setImages] = useState<string[]>([]);
   const [localImages, setLocalImages] = useState<File[]>([]);
-  const [newProduct, setNewProduct] = useState({
-    name: "",
-    price: 0,
-    description: "",
-    category: "",
-    images: [] as string[],
-  });
-
-
-  const [filteredProduct, setFilteredProduct] = useState<Product[]>([]);
-  const [homeProduct, setHomeProduct] = useState<MainProducts[]>([]);
-
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -132,16 +122,7 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
         console.error("Error uploading image:", error);
       }
     }
-
     return uploadedUrls;
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setNewProduct((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
   };
 
   const handleOpenUpdateModal = (product: any) => {
@@ -210,7 +191,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
     setImages([]);
   };
 
-
   const handleReplaceProduct = async () => {
     if (!selectedProductReplace) return;
     setIsReplacing(true);
@@ -227,7 +207,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
       body: raw,
       redirect: "follow" as RequestRedirect
     };
-
     // console.log("check id: ", productReplacePosition)
     // console.log("check product_id: ", selectedProductReplaceID)
     try {
@@ -241,7 +220,8 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
       setIsReplacing(false);
       handleCloseReplaceModal();
       setIsLoading(true);
-      window.location.reload();
+      getProductHomePage();
+      fetchProducts();
     } catch (error) {
       console.error("Error:", error);
       alert("Failed to update product");
@@ -258,19 +238,16 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
     try {
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
-
       const raw = JSON.stringify({
         method: "GET",
         lang: lang
       });
-
       const requestOptions: RequestInit = {
         method: "POST",
         headers: myHeaders,
         body: raw,
         redirect: "follow",
       };
-
       const response = await fetch(
         getUrl(),
         requestOptions
@@ -306,18 +283,15 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
   const getProductHomePage = async () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-
     const raw = JSON.stringify({
       method: "GET",
     });
-
     const requestOptions: RequestInit = {
       method: "POST",
       headers: myHeaders,
       body: raw,
       redirect: "follow",
     };
-
     try {
       const response = await fetch(
         "https://n8n.khiemfle.com/webhook/7a9b383f-1381-4e46-82a6-800e6fb2f122",
@@ -346,8 +320,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
         homeProduct.some(home => home.product_id === product.id)
       );
 
-      // const categoryOrder = ['Trang Trí Nhà Cửa', 'Nhà Bếp', 'Nội Thất', 'Thời Trang'];
-
       const sortedProducts = matchedProducts.sort((a, b) => {
         const categoryComparison = categories.indexOf(a.category) - categories.indexOf(b.category);
         if (categoryComparison === 0) {
@@ -357,10 +329,9 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
       });
 
       setFilteredProduct(sortedProducts);
-      console.log("filter products:", homeProduct);
+      // console.log("filter products:", homeProduct);
     }
   }, [products, homeProduct]);
-
 
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -441,9 +412,7 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
               width={23}
               height={23}
             />
-            <div
-              className={`mt-1 transition-transform duration-300 ${isOpen ? "-translate-y-0.5" : "-rotate-90"} mt-1`}
-            >
+            <div className={`mt-1 transition-transform duration-300 ${isOpen ? "-translate-y-0.5" : "-rotate-90"} mt-1`}>
               <svg
                 className="-mr-1 size-5 text-gray-400"
                 viewBox="0 0 20 20"
@@ -459,7 +428,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
               </svg>
             </div>
           </div>
-
           {isOpen && (
             <ul className="absolute right-0 z-10 mt-2 w-[58px] origin-top-right rounded-md bg-white bg-opacity-80 shadow-lg ring-1 ring-black/5 focus:outline-none">
               {languages
@@ -485,7 +453,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
             <h4 className="text-xl font-semibold text-black dark:text-white">
               {dictionary?.MAINPRODUCT_table_title}
             </h4>
-
           </div>
           <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
             <div className="col-span-3 flex items-center">
@@ -559,7 +526,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
               </div>
             ))
           )}
-
           {isUpdateModalOpen && selectedProduct && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center mt-15">
               <div className="bg-white p-6 rounded-lg w-1/3">
@@ -607,7 +573,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
               </div>
             </div>
           )}
-
           {isReplaceModalOpen && selectedProduct && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center mt-15">
               <div className="bg-white p-6 rounded-lg w-2/4">
@@ -617,17 +582,13 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
                   onChange={(e) => {
                     const selectedId = e.target.value;
                     setSelectedProductReplaceID(selectedId)
-                    console.log("check pro: ", selectedProduct)
+                    // console.log("check pro: ", selectedProduct)
                     const selected = products.find((product) => product.id === parseInt(selectedId));
                     if (selected) {
                       setSelectedProductReplace(selected);
-
                       const homePro = homeProduct.find((hp) => hp.product_id === selectedProduct.id);
                       if (homePro) {
                         setProductReplacePosition(homePro.id);
-                        // console.log("Selected HomeProduct data:", homePro);
-                      } else {
-                        console.error("No matching homeProduct found.");
                       }
                     }
                   }}
@@ -637,23 +598,22 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
                     .filter(
                       (product) =>
                         product.category === selectedProduct.category &&
-                        !filteredProduct.some((filtered) => filtered.id === product.id)
-                    ).length > 0 ? products
+                        !filteredProduct.some((filtered) => filtered.id === product.id))
+                    .length > 0 ? products
                       .filter(
                         (product) =>
                           product.category === selectedProduct.category &&
-                          !filteredProduct.some((filtered) => filtered.id === product.id)
-                      )
+                          !filteredProduct.some((filtered) => filtered.id === product.id))
                       .map((product) => (
                         <option key={product.id} value={product.id}>
                           {product.name}
-                        </option>
-                      )) :
+                        </option>)
+                      ) : (
                     <option key="" disabled>
                       {dictionary?.MAINPRODUCT_replace_modal_full}
-                    </option>}
+                    </option>
+                  )}
                 </select>
-
                 {!selectedProductReplace && (
                   <div className="flex justify-between gap-4.5">
                     <div className="flex gap-4">
@@ -666,7 +626,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
                     </div>
                   </div>
                 )}
-
                 {selectedProductReplace && (
                   <>
                     <div className="grid grid-cols-6 gap-2 mb-4">
@@ -716,7 +675,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
                       className="w-full mb-4 px-3 py-2 border rounded-lg text-sm"
                       rows={5}
                     />
-
                     <div className="flex justify-between gap-4.5">
                       <div className="flex gap-4">
                         <button
@@ -740,8 +698,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
               </div>
             </div>
           )}
-
-
         </div>
       </div>
     </div>
