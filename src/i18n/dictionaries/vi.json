@@ -82,5 +82,7 @@
   "MAINPRODUCT_replace_button": "Thay đổi",
   "MAINPRODUCT_replace_modal_title": "Thay thế sản phẩm cho danh mục",
   "MAINPRODUCT_replace_modal_select": "Chọn sản phẩm",
-  "MAINPRODUCT_replace_modal_full": "Tất cả sản phẩm đã được hiển thị"
+  "MAINPRODUCT_replace_modal_full": "Tất cả sản phẩm đã được hiển thị",
+  "MAINPRODUCT_replacing_btn": "Đang thay đổi",
+  "MAINPRODUCT_replace_btn": "Thay Đổi"
 }

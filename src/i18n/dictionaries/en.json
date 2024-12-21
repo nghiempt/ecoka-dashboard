@@ -82,5 +82,7 @@
   "MAINPRODUCT_replace_button": "Replace",
   "MAINPRODUCT_replace_modal_title": "Replace product for category",
   "MAINPRODUCT_replace_modal_select": "Select product",
-  "MAINPRODUCT_replace_modal_full": "All products have been displayed"
+  "MAINPRODUCT_replace_modal_full": "All products have been displayed",
+  "MAINPRODUCT_replacing_btn": "Changing",
+  "MAINPRODUCT_replace_btn": "Change"
 }

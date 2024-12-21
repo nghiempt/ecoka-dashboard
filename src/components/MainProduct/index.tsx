@@ -73,6 +73,8 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
   const [isReplaceModalOpen, setIsReplaceModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null as any);
   const [selectedProductReplace, setSelectedProductReplace] = useState(null as any);
+  const [selectedProductReplaceID, setSelectedProductReplaceID] = useState(null as any);
+  const [productReplacePosition, setProductReplacePosition] = useState(null as any);
   const [images, setImages] = useState<string[]>([]);
   const [localImages, setLocalImages] = useState<File[]>([]);
   const [newProduct, setNewProduct] = useState({
@@ -214,12 +216,8 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
     setIsReplacing(true);
     const raw = JSON.stringify({
       method: "UPDATE",
-      row_number: selectedProductReplace.row_number,
-      id: selectedProductReplace.id,
-      category: selectedProductReplace.category,
-      category_en: selectedProductReplace.category_en,
-      category_jp: selectedProductReplace.category_jp,
-      product_id: selectedProductReplace.product_id
+      id: productReplacePosition,
+      product_id: selectedProductReplaceID
     });
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -229,6 +227,9 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
       body: raw,
       redirect: "follow" as RequestRedirect
     };
+
+    // console.log("check id: ", productReplacePosition)
+    // console.log("check product_id: ", selectedProductReplaceID)
     try {
       const response = await fetch(
         "https://n8n.khiemfle.com/webhook/7a9b383f-1381-4e46-82a6-800e6fb2f122",
@@ -240,7 +241,7 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
       setIsReplacing(false);
       handleCloseReplaceModal();
       setIsLoading(true);
-      await fetchProducts();
+      window.location.reload();
     } catch (error) {
       console.error("Error:", error);
       alert("Failed to update product");
@@ -302,7 +303,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
     }
   };
 
-
   const getProductHomePage = async () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -328,9 +328,8 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data: MainProducts[] = await response.json();
-      // console.log("Data fetched from getProductHomePage:", data);
+      // console.log("ProductHomePage:", data);
       setHomeProduct(data);
-
     } catch (error) {
       console.error("Error in getProductHomePage:", error);
     }
@@ -352,13 +351,13 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
       const sortedProducts = matchedProducts.sort((a, b) => {
         const categoryComparison = categories.indexOf(a.category) - categories.indexOf(b.category);
         if (categoryComparison === 0) {
-          return a.id - b.id; // Sort by id if categories are the same
+          return a.id - b.id;
         }
         return categoryComparison;
       });
 
       setFilteredProduct(sortedProducts);
-      // console.log("Filtered Products:", sortedProducts);
+      console.log("filter products:", homeProduct);
     }
   }, [products, homeProduct]);
 
@@ -538,8 +537,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
                     {Intl.NumberFormat('de-DE').format(product.price)} VND
                   </p>
                 </div>
-
-
                 <div className="col-span-1 flex flex-col items-start justify-center gap-2">
                   <div className=""
                     onClick={() => handleOpenUpdateModal(product)}
@@ -594,11 +591,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
                 <input type="number" value={selectedProduct?.price} onChange={(e) => setSelectedProduct({ ...selectedProduct, price: +e.target.value })} className="w-full mb-4 px-3 py-2 border rounded-lg text-sm" />
                 <textarea defaultValue={selectedProduct?.description} onChange={(e) => setSelectedProduct({ ...selectedProduct, description: e.target.value })} className="w-full mb-4 px-3 py-2 border rounded-lg text-sm" rows={5} />
                 <div className="flex justify-between gap-4.5">
-                  {/* <button className="flex justify-center rounded border border-stroke px-6 py-2 bg-red-500 hover:bg-opacity-90 font-medium text-gray"
-                //  onClick={handleDeleteProduct}
-                >
-                  {isDelete ? `${dictionary?.PRODUCT_deleting_btn}...` : `${dictionary?.PRODUCT_delete_btn}`}
-                </button> */}
                   <div className="flex gap-4">
                     <button className="flex justify-center rounded border border-stroke px-6 py-2"
                       onClick={handleCloseUpdateModal}
@@ -624,9 +616,19 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
                   className="w-full mb-4 p-2 border border-gray-300 rounded"
                   onChange={(e) => {
                     const selectedId = e.target.value;
+                    setSelectedProductReplaceID(selectedId)
+                    console.log("check pro: ", selectedProduct)
                     const selected = products.find((product) => product.id === parseInt(selectedId));
                     if (selected) {
                       setSelectedProductReplace(selected);
+
+                      const homePro = homeProduct.find((hp) => hp.product_id === selectedProduct.id);
+                      if (homePro) {
+                        setProductReplacePosition(homePro.id);
+                        // console.log("Selected HomeProduct data:", homePro);
+                      } else {
+                        console.error("No matching homeProduct found.");
+                      }
                     }
                   }}
                 >
@@ -674,7 +676,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
                         </div>
                       ))}
                     </div>
-
                     <textarea
                       disabled
                       value={selectedProductReplace?.name}
@@ -683,7 +684,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
                       }
                       className="w-full mb-2 px-3 py-2 border rounded-lg text-sm h-[80px]"
                     />
-
                     <select
                       disabled
                       value={selectedProductReplace?.category}
@@ -698,7 +698,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
                         </option>
                       ))}
                     </select>
-
                     <input
                       disabled
                       type="number"
@@ -708,7 +707,6 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
                       }
                       className="w-full mb-4 px-3 py-2 border rounded-lg text-sm"
                     />
-
                     <textarea
                       disabled
                       value={selectedProductReplace?.description}
@@ -731,16 +729,14 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
                           className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                           onClick={handleReplaceProduct}
                         >
-                          {isSaving
-                            ? `${dictionary?.PRODUCT_saving_btn}...`
-                            : `${dictionary?.PRODUCT_save_btn}`}
+                          {isReplacing
+                            ? `${dictionary?.MAINPRODUCT_replacing_btn}...`
+                            : `${dictionary?.MAINPRODUCT_replace_btn}`}
                         </button>
                       </div>
                     </div>
                   </>
                 )}
-
-
               </div>
             </div>
           )}

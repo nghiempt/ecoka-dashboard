@@ -82,5 +82,7 @@
   "MAINPRODUCT_replace_button": "変更",
   "MAINPRODUCT_replace_modal_title": "カテゴリの製品を置換",
   "MAINPRODUCT_replace_modal_select": "製品を選択",
-  "MAINPRODUCT_replace_modal_full": "すべての製品が表示されました"
+  "MAINPRODUCT_replace_modal_full": "すべての製品が表示されました",
+  "MAINPRODUCT_replacing_btn": "変更中",
+  "MAINPRODUCT_replace_btn": "変更"
 }
