@@ -77,7 +77,7 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
       myHeaders.append("Content-Type", "application/json");
       const raw = JSON.stringify({
         method: "GET",
-        lang: lang
+        lang: "vi"
       });
       const requestOptions: RequestInit = {
         method: "POST",
