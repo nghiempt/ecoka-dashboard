@@ -33,38 +33,10 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
     }
   }, [router, lang]);
 
-  const getCate = () => {
-    let categories: string[] = [];
-    switch (lang) {
-      case "vi":
-        categories = ['Trang Trí Nhà Cửa', 'Nhà Bếp', 'Nhà Thú Cưng', 'Thời Trang'];
-        break;
-      case "en":
-        categories = ['Home Decoration', 'Kitchen', 'Pet Houses', 'Fashion'];
-        break;
-      case "jp":
-        categories = ['ホームデコレーション', '台所', 'ペットハウス', 'ファッション'];
-        break;
-      default:
-        categories = [];
-    }
-    return categories;
-  };
 
-  const categories: string[] = getCate();
+  const categories = ['Trang Trí Nhà Cửa', 'Nhà Bếp', 'Nhà Thú Cưng', 'Thời Trang'];
 
-  const getUrl = () => {
-    switch (lang) {
-      case "vi":
-        return apiUrl
-      case "en":
-        return apiUrlEn
-      case "jp":
-        return apiUrlJp
-      default:
-        return apiUrl
-    }
-  }
+
 
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProduct, setFilteredProduct] = useState<Product[]>([]);
@@ -86,7 +58,7 @@ const MainProductPage = ({ lang, dictionary }: { lang: string, dictionary: any }
         redirect: "follow",
       };
       const response = await fetch(
-        getUrl(),
+        apiUrl,
         requestOptions
       );
       if (!response.ok) {
